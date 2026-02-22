@@ -117,6 +117,18 @@ angular.module('radwege').controller("edit", ['$scope', '$http', '$filter', 'lea
       }
     });
   };
+  $scope.reset = function (f) {
+    $http.post("reset.php", JSON.stringify(f)).then(function (response) {
+      if (response.data.success=="1") {
+        alert("Beitrag wurde resetet");
+        //$scope.$apply(function () {
+        $scope.eintraege.splice($scope.eintraege.indexOf(f), 1);
+        $scope.f = $filter('filter')($scope.eintraege, $scope.filtern)[0];
+        $scope.selecteditem();
+        //});
+      }
+    });
+  };
   $scope.decline = function (f) {
     var verb = f.published==0?'löschen':'verwerfen';
     if (confirm("Den Eintrag wirklich "+verb+"?")) {
